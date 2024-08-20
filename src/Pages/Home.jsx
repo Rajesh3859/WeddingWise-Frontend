@@ -2,13 +2,15 @@ import {  TextInput } from 'flowbite-react';
 import  { useState } from 'react';
 import { AiOutlineSearch } from "react-icons/ai";
 import { Link, useNavigate } from 'react-router-dom';
+import couple from "../assets/couple.png";
+
+
 
 
 
 
 const Home = () => {
-   
-
+  
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
@@ -77,7 +79,7 @@ const Home = () => {
           <div className="flex justify-center items-center sm:ml-0 mt-3">
             <img
               className="rounded-full max-w-auto h-auto "
-              src="couple.png"
+              src={couple}
               alt="image description"
             />
           </div>
