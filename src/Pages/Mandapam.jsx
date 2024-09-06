@@ -1,29 +1,15 @@
-import { useState } from "react";
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-} from "flowbite-react";
-import { Tooltip, TextInput } from "flowbite-react";
+import { Button } from "flowbite-react";
 import { Link } from "react-router-dom";
 
 const Mandapam = () => {
-  const [text] = useState("+919597831654");
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+  const toggleModal1 = () => {
+    window.location.href = "https://buy.stripe.com/test_bIY8yt0rQbV88fu5kr";
   };
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
+  const toggleModal2 = () => {
+    window.location.href = "https://buy.stripe.com/test_6oE8yt0rQe3g53i8wE";
+  };
+  const toggleModal3 = () => {
+    window.location.href = "https://buy.stripe.com/test_7sIdSN3E2bV8eDS009";
   };
   return (
     <div>
@@ -112,40 +98,9 @@ const Mandapam = () => {
               From Rs.100000
             </span>
 
-            <Button onClick={toggleModal} className="sm:ml-80">
-              Request Pricing
+            <Button onClick={toggleModal1} className="sm:ml-80">
+              Book Now
             </Button>
-            <Modal show={isOpen} onClose={toggleModal}>
-              <ModalHeader className="mb-6 bg-rose-300">
-                Request Details
-              </ModalHeader>
-              <ModalBody>
-                <div className="relative flex items-center space-x-2 ring-offset-blue-600">
-                  <TextInput
-                    type="text"
-                    value={text}
-                    className="flex-grow bg-slate-500 font-bold"
-                  />
-                  <Button
-                    onClick={handleCopy}
-                    color="primary"
-                    className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                  >
-                    Copy
-                  </Button>
-                  {copied && (
-                    <Tooltip content="Copied!" placement="top" open>
-                      <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1">
-                        Copied!
-                      </span>
-                    </Tooltip>
-                  )}
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button onClick={toggleModal}>Close</Button>
-              </ModalFooter>
-            </Modal>
           </div>
         </div>
       </div>
@@ -232,40 +187,9 @@ const Mandapam = () => {
               From Rs.2,00000
             </span>
 
-            <Button onClick={toggleModal} className="sm:ml-80">
-              Request Pricing
+            <Button onClick={toggleModal2} className="sm:ml-80">
+              Book Now
             </Button>
-            <Modal show={isOpen} onClose={toggleModal}>
-              <ModalHeader className="mb-6 bg-rose-300">
-                Request Details
-              </ModalHeader>
-              <ModalBody>
-                <div className="relative flex items-center space-x-2 ring-offset-blue-600">
-                  <TextInput
-                    type="text"
-                    value={text}
-                    className="flex-grow bg-slate-500 font-bold"
-                  />
-                  <Button
-                    onClick={handleCopy}
-                    color="primary"
-                    className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                  >
-                    Copy
-                  </Button>
-                  {copied && (
-                    <Tooltip content="Copied!" placement="top" open>
-                      <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1">
-                        Copied!
-                      </span>
-                    </Tooltip>
-                  )}
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button onClick={toggleModal}>Close</Button>
-              </ModalFooter>
-            </Modal>
           </div>
         </div>
       </div>
@@ -281,7 +205,7 @@ const Mandapam = () => {
         <div className="px-5 pb-5 ">
           <Link to="#">
             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mt-7">
-              The Promenade, Pondicherry
+              The Promenade
             </h5>
           </Link>
           <br />
@@ -354,40 +278,9 @@ const Mandapam = () => {
               From Rs.2,50,000
             </span>
 
-            <Button onClick={toggleModal} className="sm:ml-80">
-              Request Pricing
+            <Button onClick={toggleModal3} className="sm:ml-80">
+              Book Now
             </Button>
-            <Modal show={isOpen} onClose={toggleModal}>
-              <ModalHeader className="mb-6 bg-rose-300">
-                Request Details
-              </ModalHeader>
-              <ModalBody>
-                <div className="relative flex items-center space-x-2 ring-offset-blue-600">
-                  <TextInput
-                    type="text"
-                    value={text}
-                    className="flex-grow bg-slate-500 font-bold"
-                  />
-                  <Button
-                    onClick={handleCopy}
-                    color="primary"
-                    className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                  >
-                    Copy
-                  </Button>
-                  {copied && (
-                    <Tooltip content="Copied!" placement="top" open>
-                      <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1">
-                        Copied!
-                      </span>
-                    </Tooltip>
-                  )}
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button onClick={toggleModal}>Close</Button>
-              </ModalFooter>
-            </Modal>
           </div>
         </div>
       </div>
