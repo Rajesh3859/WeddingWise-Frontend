@@ -31,7 +31,7 @@ const App = () => {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<Signin />} />
+        <Route path="/" element={<Home />} />
         <Route path="/Signin" element={<Signin />} />
         <Route path="/PlanningTool" element={<PlanningTool />} />
         <Route path="/WeddingVendor" element={<WeddingVendor />} />
@@ -39,7 +39,6 @@ const App = () => {
         <Route path="/Bride" element={<Bride />} />
         <Route path="/Groom" element={<Groom />} />
         <Route path="/Signup" element={<Signup />} />
-        <Route path="/Home" element={<Home />} />
         <Route
           path="/WeddingVendor/WeddingPhotographers"
           element={<WeddingPhotograhers />}

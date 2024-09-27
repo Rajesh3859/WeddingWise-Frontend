@@ -45,12 +45,12 @@ const OAuth = () => {
 
   return (
     <Button
-      className="mr-5 ml-5"
+      className="mr-5 ml-5 mt-5"
        type="button"
       gradientDuoTone="purpleToPink"
       onClick={handleSubmit}
     >
-      <AiFillGoogleCircle className="w-6 h-5 mr-2" />
+      <AiFillGoogleCircle className="w-6 h-5 mr-3" />
       Continue with Google
     </Button>
   );
