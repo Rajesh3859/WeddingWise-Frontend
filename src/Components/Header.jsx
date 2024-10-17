@@ -1,212 +1,153 @@
 import { Link, useLocation } from "react-router-dom";
 import { FaMoon, FaSun } from "react-icons/fa";
-import {
-  Avatar,
-  Button,
-  Dropdown,
-  DropdownDivider,
-  DropdownHeader,
-  DropdownItem,
-  Navbar,
-  NavbarCollapse,
-} from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../Redux/Slice/themeSlice";
 import { signOutSuccess } from "../Redux/Slice/userSlice";
+import { Navbar, Nav, NavDropdown, Offcanvas } from "react-bootstrap";
+import { useState } from "react";
+import { selectCurrentUser } from "../Redux/Slice/userSlice"; // Import the memoized selector
 
 const Header = () => {
   const path = useLocation().pathname;
   const dispatch = useDispatch();
-  const { currentuser } = useSelector((state) => state.user);
-  const { theme } = useSelector((state) => state.theme);
+  const currentuser = useSelector(selectCurrentUser); // Use memoized selector
+  const { theme } = useSelector((state) => state.theme || {});
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
+
+  const handleClose = () => setShowOffcanvas(false);
+  const handleShow = () => setShowOffcanvas(true);
+
   const handleSignout = () => {
-    dispatch(signOutSuccess());
+    dispatch(signOutSuccess(alert("Sign out successfully")));
     localStorage.removeItem("token");
   };
 
   return (
-    <Navbar className="border-b-2 dark:bg-black bg-orange-50">
-      <Link
-        to="/Home"
-        className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white mr-auto"
-      >
-        <span className="px-0 py-1  font-bold text-2xl bg-gradient-to-r from bg-yellow-600 via-orange-500 to from-red-600 text-transparent bg-clip-text">
+    <Navbar
+      bg={theme === "light" ? "dark" : "light"}
+      expand="lg"
+      className="border-bottom border-2 sticky"
+    >
+      <Navbar.Brand as={Link} to="/Home"
+        className="font-weight-bold text-lg">
+        <span className="bg-gradient-to-r from bg-yellow-600 via-orange-500 to-red-600 text-transparent bg-clip-text">
           WeddingWise
         </span>
-      </Link>
+      </Navbar.Brand>
 
-      <div className="flex gap-5 order-2 ml-auto">
-        {currentuser ? (
-          <Dropdown
-            arrowIcon={false}
-            inline
-            label={
-              <Avatar
-                alt="user"
-                img={currentuser.rest.profilePicture}
-                rounded
-              />
-            }
-          >
-            <DropdownHeader>
-              <span className="block text-sm">
-                {" "}
-                👤<strong>{currentuser.rest.username}</strong>
-              </span>
-              <br />
-              <span className="block text-sm">
-                {" "}
-                📧<strong>{currentuser.rest.email}</strong>
-              </span>
-            </DropdownHeader>
+      <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShow} />
 
-            <DropdownDivider />
-            <Link to="/Signin">
-              <DropdownItem onClick={handleSignout}>
-                {" "}
-                ⬅️ <strong className="text-red-700">Sign out</strong>
-              </DropdownItem>
-            </Link>
-          </Dropdown>
-        ) : (
-          <Link to="/Signin">
-            <Button gradientMonochrome="cyan" className="w-12 h-10">
-              SignIn
-            </Button>
-          </Link>
-        )}
+      <Navbar.Offcanvas
+        id="offcanvasNavbar"
+        aria-labelledby="offcanvasNavbarLabel"
+        placement="end"
+        show={showOffcanvas}
+        onHide={handleClose}
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title id="offcanvasNavbarLabel">Menu</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <Nav className="flex-row-right grid gap-4 ">
+            <Nav.Link
+              as={Link}
+              to="/PlanningTool"
+              active={path === "/PlanningTool"}
+            >
+              Planning Tool
+            </Nav.Link>
+            <NavDropdown title="Wedding Vendor" id="wedding-vendor-dropdown">
+              <NavDropdown.Item
+                as={Link}
+                to="/WeddingVendor/WeddingPhotographers"
+              >
+                Wedding Photographers
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                to="/WeddingVendor/WeddingVideographers"
+              >
+                Wedding Videographers
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/WeddingVendor/WeddingPlanners">
+                Wedding Planners
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/WeddingVendor/Caterers">
+                Caterers
+              </NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown title="Wedding Venue" id="wedding-venue-dropdown">
+              <NavDropdown.Item as={Link} to="/WeddingVenue/Banquet">
+                Banquet Halls
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/WeddingVenue/WeddingResort">
+                Wedding Resorts
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/WeddingVenue/Mandapam">
+                Kalyana Mandapams
+              </NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown title="Bride" id="bride-dropdown">
+              <NavDropdown.Item as={Link} to="/Bride/MehndiArtists">
+                Mehndi Artists
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/Bride/MakeupArtists">
+                Bridal Makeup Artists
+              </NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown title="Groom" id="groom-dropdown">
+              <NavDropdown.Item as={Link} to="/Groom/Dress">
+                Sherwani
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/Groom/GroomMakeup">
+                Groom Makeup Artists
+              </NavDropdown.Item>
+            </NavDropdown>
+            {currentuser ? (
+              <NavDropdown
+                align="end"
+                title={
+                  <img
+                    src={
+                      currentuser.rest?.profilePicture ||
+                      "/path/to/default-image.jpg"
+                    } // Fallback image if profilePicture is not available
+                    alt="user"
+                    className="rounded-circle"
+                    style={{ width: "30px", height: "30px" }}
+                  />
+                }
+                id="dropdown-avatar"
+              >
+                <NavDropdown.Header>
+                  <strong>👤 {currentuser.rest?.username || "Guest"}</strong>{" "}
+                  <br />
+                  📧 {currentuser.rest?.email || "No Email"}
+                </NavDropdown.Header>
+                <NavDropdown.Divider />
+                <NavDropdown.Item
+                  as={Link}
+                  to="/Signin"
+                  onClick={handleSignout}
+                >
+                  ⬅️ <strong className="text-danger">Sign out</strong>
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <Nav.Link as={Link} to="/Signin" className="btn btn-outline-info">
+                Sign In
+              </Nav.Link>
+            )}
 
-        <Button
-          className="w-12 h-10  sm:inline"
-          gradientMonochrome="cyan"
-          outline
-          pill
-          onClick={() => dispatch(toggleTheme())}
-        >
-          {theme === "light" ? <FaMoon /> : <FaSun />}
-        </Button>
-        <Navbar.Toggle />
-      </div>
-      <NavbarCollapse>
-        <div className="relative group ">
-          <Navbar.Link active={path === "/PlanningTool"} as={"div"}>
-            <Link to="/PlanningTool" className="text-brown">
-              PlanningTool
-            </Link>
-          </Navbar.Link>
-
-          <div className="md:absolute left-0 top-full hidden group-hover:flex flex-col mt-2 bg-white shadow-lg ">
-            <Link
-              to="/PlanningTool/Budget"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            <button
+              className="btn btn-outline-info ml-3"
+              onClick={() => dispatch(toggleTheme())}
             >
-              Budget
-            </Link>
-          </div>
-        </div>
-        <div className="relative group">
-          <Navbar.Link active={path === "/WeddingVendor"} as={"div"}>
-            <Link to="/WeddingVendor" className="text-brown">
-              WeddingVendor
-            </Link>
-          </Navbar.Link>
-          <div className=" md:absolute left-0 top-full hidden group-hover:flex flex-col mt-2 bg-white shadow-lg">
-            <Link
-              to="/WeddingVendor/WeddingPhotographers"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Wedding Photographers
-            </Link>
-            <Link
-              to="/WeddingVendor/WeddingVideographers"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Wedding Videographers
-            </Link>
-            <Link
-              to="/WeddingVendor/WeddingPlanners"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Wedding Planners
-            </Link>
-            <Link
-              to="/WeddingVendor/Caterers"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Caterers
-            </Link>
-          </div>
-        </div>
-        <div className="relative group">
-          <Navbar.Link active={path === "/WeddingVenue"} as={"div"}>
-            <Link to="/WeddingVenue" className="text-brown">
-              WeddingVenue
-            </Link>
-          </Navbar.Link>
-          <div className=" md:absolute left-0 top-full hidden group-hover:flex flex-col mt-2 bg-white shadow-lg">
-            <Link
-              to="/WeddingVenue/Banquet"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Banquet Halls
-            </Link>
-            <Link
-              to="/WeddingVenue/WeddingResort"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Wedding Resorts
-            </Link>
-            <Link
-              to="/WeddingVenue/Mandapam"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Kalyana Mandapams
-            </Link>
-          </div>
-        </div>
-        <div className="relative group">
-          <Navbar.Link active={path === "/Bride"} as={"div"}>
-            <Link to="/Bride" className="text-brown">
-              Bride
-            </Link>
-          </Navbar.Link>
-          <div className=" md:absolute left-0 top-full hidden group-hover:flex flex-col mt-2 bg-white shadow-lg">
-            <Link
-              to="/Bride/MehndiArtists"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Mehndi Artists
-            </Link>
-            <Link
-              to="/Bride/MakeupArtists"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Bridal Makeup Artists
-            </Link>
-          </div>
-        </div>
-        <div className="relative group">
-          <Navbar.Link active={path === "/Groom"} as={"div"}>
-            <Link to="/Groom" className="text text-md ">
-              Groom
-            </Link>
-          </Navbar.Link>
-          <div className=" md:absolute left-0 top-full hidden group-hover:flex flex-col mt-2 bg-white shadow-lg">
-            <Link
-              to="/Groom/Dress"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Sherwani
-            </Link>
-            <Link
-              to="/Groom/GroomMakeup"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Groom Makeup Artists
-            </Link>
-          </div>
-        </div>
-      </NavbarCollapse>
+              {theme === "light" ? <FaMoon /> : <FaSun />}
+            </button>
+          </Nav>
+        </Offcanvas.Body>
+      </Navbar.Offcanvas>
     </Navbar>
   );
 };

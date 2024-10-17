@@ -1,7 +1,6 @@
-import {  Button, Label, Spinner, TextInput } from "flowbite-react";
+import { Button, Spinner, Form, Alert } from "react-bootstrap";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-//import { HiInformationCircle } from "react-icons/hi";
 import OAuth from "../Components/OAuth";
 
 const Signup = () => {
@@ -53,85 +52,68 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen mt-50 ml-10 mr-10">
-      <div>
-        <div>
-          <div className="text-3xl font-semibold dark:text-white">
-            <span className="px-2 py-1 bg-gradient-to-r from-yellow-600 via-orange-500 to-red-600 text-transparent bg-clip-text">
-              WeddingWise
-            </span>
-          </div>
-          <p className="text-m mt-6">
-            You can sign up with your Email and password or you can use Google.
-            This is a capstone project.
-          </p>
-        </div>
+    <div className="container mt-5">
+      <div className="text-center">
+        <h1 className="display-4">
+          <span className="text-gradient">WeddingWise</span>
+        </h1>
+        <p>
+          You can sign up with your Email and password or you can use Google.
+          This is a capstone project.
+        </p>
       </div>
-      <br />
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <div>
-          <Label value="Username" />
-          <TextInput
-            className="mr-2 ml-2"
+      <Form onSubmit={handleSubmit} className="mt-4">
+        <Form.Group controlId="username">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
             type="text"
             placeholder="Enter your Username"
-            id="username"
             onChange={handleChange}
           />
-        </div>
-        <div>
-          <Label value="Email" />
-          <TextInput
-            className="mr-2 ml-2"
+        </Form.Group>
+        <Form.Group controlId="email">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
             type="email"
             placeholder="name@company.com"
-            id="email"
             onChange={handleChange}
           />
-        </div>
-        <div>
-          <Label value="Password" />
-          <TextInput
-            className="mr-2 ml-2"
+        </Form.Group>
+        <Form.Group controlId="password">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
             type="password"
             placeholder="Enter Your Password"
-            id="password"
             onChange={handleChange}
           />
-        </div>
+        </Form.Group>
         <Button
-          className="mr-5 ml-5"
-          gradientDuoTone="redToYellow"
+          variant="primary"
           type="submit"
+          className="w-100 mt-3"
           disabled={loading}
-          aria-label="Sign up button"
         >
           {loading ? (
             <>
-              <Spinner color="purple" aria-label="Loading spinner" size="sm" />
-              <span className="pl-3">Loading...</span>
+              <Spinner animation="border" size="sm" /> Loading...
             </>
           ) : (
             "Sign Up"
           )}
         </Button>
         <OAuth />
-        <div>
+        <div className="text-center mt-3">
           <Link to="/Signin">
-            <span>Have an account already?</span>{" "}
-            <span className="font-semibold text-blue-700">Signin</span>
+            <span>Have an account already? </span>
+            <span className="font-weight-bold text-primary">Signin</span>
           </Link>
         </div>
         {error && (
-          <div
-            className="mt-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-            role="alert"
-          >
-            <span className="font-bold">OOPS!</span>
-            <span className="block sm:inline">{error}</span>
-          </div>
+          <Alert variant="danger" className="mt-3">
+            <strong>OOPS!</strong> {error}
+          </Alert>
         )}
-      </form>
+      </Form>
     </div>
   );
 };
