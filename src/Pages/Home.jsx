@@ -3,7 +3,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { Container, Row, Col, Spinner, Alert } from "react-bootstrap";
 import couple from "../assets/couple.png";
 import axios from "axios";
-import CategoryCard from "../Components/Cards/CategoryCard";
+import Categorycard from "../Components/Cards/Categorycard";
 
 export default function Home() {
   const [categories, setCategories] = useState([]); // Ensure initial state is an array
@@ -77,7 +77,7 @@ export default function Home() {
           {Array.isArray(categories) && categories.length > 0 ? (
             categories.map((category) => (
               <Col key={category._id} md={4}>
-                <CategoryCard
+                <Categorycard
                   category={{ ...category, imageUrl: category.imageUrl }}
                 />
               </Col>

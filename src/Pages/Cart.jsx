@@ -1,10 +1,10 @@
+import Servicecard from "../Components/Cards/Servicecard";
 
-import ServiceCard from "../Components/Cards/ServiceCard";
-
-const Cart = () => { // Fix the useState syntax
+const Cart = () => {
+  // Fix the useState syntax
 
   const handleAddToCart = (addToCart) => {
-    console.log("Service added to cart:", addToCart);// Add addToCart to cart
+    console.log("Service added to cart:", addToCart); // Add addToCart to cart
     alert(`${addToCart.name} added to cart!`);
   };
 
@@ -18,7 +18,7 @@ const Cart = () => { // Fix the useState syntax
 
   return (
     <div>
-      <ServiceCard
+      <Servicecard
         services={sampleServices} // Pass the single object
         addToCart={handleAddToCart} // Pass the addToCart function
       />

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { addToCart } from "../../Redux/Slice/cartSlice";
 
-const ServiceCard = ({ services }) => {
+const Servicecard = ({ services }) => {
   const [showAlert, setShowAlert] = useState(false);
 
   const handleAddToCart = () => {
@@ -57,7 +57,7 @@ const ServiceCard = ({ services }) => {
   );
 };
 
-ServiceCard.propTypes = {
+Servicecard.propTypes = {
   services: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -68,4 +68,4 @@ ServiceCard.propTypes = {
   addToCart: PropTypes.func,
 };
 
-export default ServiceCard;
+export default Servicecard;

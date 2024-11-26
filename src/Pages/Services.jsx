@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Container, Row, Col, Spinner, Alert } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import ServiceCard from "../Components/Cards/ServiceCard"; // Assuming this can be used for SubCategory
+import Servicecard from "../Components/Cards/Servicecard"; // Assuming this can be used for SubCategory
 
 export default function SubBrands() {
   const [serviceCategories, setServiceCategories] = useState([]);
@@ -68,7 +68,7 @@ export default function SubBrands() {
             {serviceCategories.length > 0 ? (
               serviceCategories.map((services) => (
                 <Col key={services._id} md={4} className="mb-4">
-                  <ServiceCard
+                  <Servicecard
                     services={services}
                     addToCart={(service) =>
                       console.log("Added to cart:", service)

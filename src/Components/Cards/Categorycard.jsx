@@ -2,7 +2,7 @@ import { Card } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom"; // Assuming you have a CSS file for custom styles
 
-const CategoryCard = ({ category }) => {
+const Categorycard = ({ category }) => {
   const navigate = useNavigate();
 
   return (
@@ -35,7 +35,7 @@ const CategoryCard = ({ category }) => {
   );
 };
 
-CategoryCard.propTypes = {
+Categorycard.propTypes = {
   category: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -44,4 +44,4 @@ CategoryCard.propTypes = {
   }).isRequired,
 };
 
-export default CategoryCard;
+export default Categorycard;
