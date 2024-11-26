@@ -59,12 +59,8 @@ const Header = () => {
             <Nav.Link onClick={() => navigate(`/SubBrands}`)}>
               Wedding Venue
             </Nav.Link>
-            <Nav.Link onClick={() => navigate(`/SubBrands}`)}>
-              Bride
-            </Nav.Link>
-            <Nav.Link onClick={() => navigate(`/SubBrands}`)}>
-              Groom
-            </Nav.Link>
+            <Nav.Link onClick={() => navigate(`/SubBrands}`)}>Bride</Nav.Link>
+            <Nav.Link onClick={() => navigate(`/SubBrands}`)}>Groom</Nav.Link>
 
             {/* User Authentication */}
             {currentuser ? (
@@ -119,9 +115,7 @@ const Header = () => {
                     right: "-10px",
                     fontSize: "12px",
                   }}
-                >
-              
-                </span>
+                ></span>
               }
             </Nav.Link>
           </Nav>
