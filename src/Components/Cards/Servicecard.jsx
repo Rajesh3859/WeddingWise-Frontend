@@ -1,25 +1,38 @@
-import { Alert, Card } from "react-bootstrap";
+import { Card, Button, Alert } from "react-bootstrap";
 import PropTypes from "prop-types";
-//import { useNavigate } from "react-router-dom"; // Assuming you have a CSS file for custom styles
+import { useState } from "react";
 
-const ServiceCard = ({ services }) => {
-  //const navigate = useNavigate();
+const ServiceCard = ({ services, addToCart }) => {
+  const [showAlert, setShowAlert] = useState(false);
+
+  const handleAddToCart = () => {
+    if (services._id) {
+      console.log("Calling addToCart with:", services);
+      addToCart(services); // Call the function to add to the cart
+      setShowAlert(true); // Show success alert
+      setTimeout(() => setShowAlert(false), 3000); // Auto-hide alert after 3 seconds
+    } else {
+      console.error("Service ID is undefined");
+      window.alert("Service ID is undefined"); // Use browser alert for errors
+    }
+  };
 
   return (
     <div>
-      <Card
-        className="services-card shadow-lg" // Added shadow, margin, and rounded styles
-        onClick={() => {
-          if (services._id) {
-            Alert("unavaiable");
-          } else {
-            console.error("service ID is undefined");
-          }
-        }}
-        style={{ cursor: "pointer" }}
-      >
+      {/* Conditionally Render the Alert */}
+      {showAlert && (
+        <Alert
+          variant="success"
+          onClose={() => setShowAlert(false)}
+          dismissible
+        >
+          Added to Cart Successfully!
+        </Alert>
+      )}
+
+      <Card className="services-card shadow-lg" style={{ cursor: "pointer" }}>
         <Card.Img
-          className="card-image" // Add custom image styling
+          className="card-image"
           variant="top"
           src={services.imageUrl}
           alt={services.name}
@@ -29,9 +42,14 @@ const ServiceCard = ({ services }) => {
           <Card.Text className="text-muted">
             {services.description || "No description available"}
           </Card.Text>
-          {/* <Button variant="primary">
-            Book Now - ${services.price}
-          </Button> */}
+          {services.price && (
+            <Card.Text className="text-primary font-weight-bold">
+              Price: ₹{services.price.toLocaleString("en-IN")}
+            </Card.Text>
+          )}
+          <Button variant="success" onClick={handleAddToCart}>
+            Add to Cart
+          </Button>
         </Card.Body>
       </Card>
     </div>
@@ -46,6 +64,7 @@ ServiceCard.propTypes = {
     description: PropTypes.string,
     imageUrl: PropTypes.string,
   }).isRequired,
+  addToCart: PropTypes.func.isRequired,
 };
 
 export default ServiceCard;

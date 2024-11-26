@@ -9,8 +9,8 @@ import {
 
 const FooterCom = () => {
   return (
-    <footer className="bg-orange-200 text-dark mt-auto">
-      <div className="container bg-warning m-0 position">
+    <footer className="footer">
+      <div className="container test-center py-3">
         <div className="row justify-content-between">
           <div className="col-md-3 mt-5">
             <a href="#" className="d-flex justify-content-center">

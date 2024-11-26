@@ -15,7 +15,7 @@ export default function SubBrands() {
         console.log("Fetching subcategories for ID:", params.id);
         try {
           const response = await fetch(
-            `http://localhost:3001/subbrands/${params.id}`
+            `https://weddingwise-backend-gda8.onrender.com/subbrands/${params.id}`
           ); // Dynamic ID
 
           if (!response.ok) {

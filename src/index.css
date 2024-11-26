@@ -1,15 +1,37 @@
 html, body {
+  height: 100%;
  margin: 0px;
+ display: flex;
   padding: 0px;
   font-family: Poppins, sans-serif;
   font-size: 16px;  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  flex-direction: column;
 }
 h1 {
   font-family: 'Abril Fatface', serif;
   font-size: 46px;  
+}
+#root {
+  /* Ensures React content fills the screen */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.main-content {
+  /* Pushes the footer down if needed */
+  flex: 1;
+}
+.footer {
+  background-color: hsla(39, 96%, 50%, 0.856);
+  padding: 10px 0;
+  width: 100%;
+  margin-top: 40px;
+  text-align: center;
+  position: relative;
+  bottom: 0px;
 }
 /* .heading{
 font-family: "Brush Script MT", cursive;

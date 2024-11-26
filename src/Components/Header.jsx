@@ -1,14 +1,16 @@
-import { Link, useLocation } from "react-router-dom";
-import { FaMoon, FaSun } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { FaMoon, FaSun, FaShoppingCart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../Redux/Slice/themeSlice";
 import { signOutSuccess } from "../Redux/Slice/userSlice";
 import { Navbar, Nav, NavDropdown, Offcanvas } from "react-bootstrap";
 import { useState } from "react";
-import { selectCurrentUser } from "../Redux/Slice/userSlice"; // Import the memoized selector
+import PropTypes from "prop-types";
+import { selectCurrentUser } from "../Redux/Slice/userSlice";
+import { useNavigate } from "react-router-dom"; // Import the memoized selector
 
-const Header = () => {
-  const path = useLocation().pathname;
+const Header = ({ category, cartCount }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentuser = useSelector(selectCurrentUser); // Use memoized selector
   const { theme } = useSelector((state) => state.theme || {});
@@ -26,10 +28,9 @@ const Header = () => {
     <Navbar
       bg={theme === "light" ? "dark" : "light"}
       expand="lg"
-      className="border-bottom border-2 sticky"
+      className="border-bottom border-2 sticky-top"
     >
-      <Navbar.Brand as={Link} to="/Home"
-        className="font-weight-bold text-lg">
+      <Navbar.Brand as={Link} to="/" className="font-weight-bold text-lg">
         <span className="bg-gradient-to-r from bg-yellow-600 via-orange-500 to-red-600 text-transparent bg-clip-text">
           WeddingWise
         </span>
@@ -49,70 +50,31 @@ const Header = () => {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Nav className="flex-row-right grid gap-4 ">
-            <Nav.Link
-              as={Link}
-              to="/PlanningTool"
-              active={path === "/PlanningTool"}
-            >
+            {/* Navigation Links */}
+            <Nav.Link onClick={() => navigate(`/SubBrands/${category.name}`)}>
               Planning Tool
             </Nav.Link>
-            <NavDropdown title="Wedding Vendor" id="wedding-vendor-dropdown">
-              <NavDropdown.Item
-                as={Link}
-                to="/WeddingVendor/WeddingPhotographers"
-              >
-                Wedding Photographers
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                as={Link}
-                to="/WeddingVendor/WeddingVideographers"
-              >
-                Wedding Videographers
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/WeddingVendor/WeddingPlanners">
-                Wedding Planners
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/WeddingVendor/Caterers">
-                Caterers
-              </NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title="Wedding Venue" id="wedding-venue-dropdown">
-              <NavDropdown.Item as={Link} to="/WeddingVenue/Banquet">
-                Banquet Halls
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/WeddingVenue/WeddingResort">
-                Wedding Resorts
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/WeddingVenue/Mandapam">
-                Kalyana Mandapams
-              </NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title="Bride" id="bride-dropdown">
-              <NavDropdown.Item as={Link} to="/Bride/MehndiArtists">
-                Mehndi Artists
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/Bride/MakeupArtists">
-                Bridal Makeup Artists
-              </NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title="Groom" id="groom-dropdown">
-              <NavDropdown.Item as={Link} to="/Groom/Dress">
-                Sherwani
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/Groom/GroomMakeup">
-                Groom Makeup Artists
-              </NavDropdown.Item>
-            </NavDropdown>
+            <Nav.Link onClick={() => navigate(`/SubBrands/${category.name}`)}>
+              Wedding Vendor
+            </Nav.Link>
+            <Nav.Link onClick={() => navigate(`/SubBrands/${category.name}`)}>
+              Wedding Venue
+            </Nav.Link>
+            <Nav.Link onClick={() => navigate(`/SubBrands/${category.name}`)}>
+              Bride
+            </Nav.Link>
+            <Nav.Link onClick={() => navigate(`/SubBrands/${category.name}`)}>
+              Groom
+            </Nav.Link>
+
+            {/* User Authentication */}
             {currentuser ? (
               <NavDropdown
                 align="end"
                 title={
                   <img
-                    src={
-                      currentuser.rest?.profilePicture ||
-                      "/path/to/default-image.jpg"
-                    } // Fallback image if profilePicture is not available
-                    alt="user"
+                    src="" // Fallback image if profilePicture is not available
+                    alt="👤user"
                     className="rounded-circle"
                     style={{ width: "30px", height: "30px" }}
                   />
@@ -120,7 +82,7 @@ const Header = () => {
                 id="dropdown-avatar"
               >
                 <NavDropdown.Header>
-                  <strong>👤 {currentuser.rest?.username || "Guest"}</strong>{" "}
+                  <strong> 👤{currentuser.rest?.username || "Guest"}</strong>
                   <br />
                   📧 {currentuser.rest?.email || "No Email"}
                 </NavDropdown.Header>
@@ -139,17 +101,42 @@ const Header = () => {
               </Nav.Link>
             )}
 
+            {/* Theme Toggle */}
             <button
               className="btn btn-outline-info ml-3"
               onClick={() => dispatch(toggleTheme())}
             >
               {theme === "light" ? <FaMoon /> : <FaSun />}
             </button>
+
+            {/* Cart Icon */}
+            <Nav.Link as={Link} to="/Cart" className="position-relative">
+              <FaShoppingCart size={20} />
+              {cartCount > 0 && (
+                <span
+                  className="badge badge-pill badge-danger position-absolute"
+                  style={{
+                    top: "-5px",
+                    right: "-10px",
+                    fontSize: "12px",
+                  }}
+                >
+                  {cartCount}
+                </span>
+              )}
+            </Nav.Link>
           </Nav>
         </Offcanvas.Body>
       </Navbar.Offcanvas>
     </Navbar>
   );
+};
+
+Header.propTypes = {
+  category: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  cartCount: PropTypes.number.isRequired, // Number of items in the cart
 };
 
 export default Header;

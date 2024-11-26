@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Container, Row, Col, Spinner, Alert } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import ServiceCard from "../Components/Cards/Servicecard"; // Assuming this can be used for SubCategory
+import ServiceCard from "../Components/Cards/ServiceCard"; // Assuming this can be used for SubCategory
 
 export default function SubBrands() {
   const [serviceCategories, setServiceCategories] = useState([]); // Store serviceCategories
@@ -15,7 +15,7 @@ export default function SubBrands() {
         console.log("Fetching subcategories for ID:", params.id);
         try {
           const response = await fetch(
-            `http://localhost:3001/products/subbrand/${params.id}`
+            `https://weddingwise-backend-gda8.onrender.com/products/subbrand/${params.id}`
           ); // Dynamic ID
 
           if (!response.ok) {

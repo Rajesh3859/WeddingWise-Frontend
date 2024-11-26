@@ -17,7 +17,7 @@ const OAuth = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const res = await fetch(
-        "https://weddingwise-backend-gda8.onrender.com/auth/google",
+        "https://weddingwise-backend-gda8.onrender.com/api/users/google",
         {
           method: "POST",
           headers: {
@@ -33,7 +33,7 @@ const OAuth = () => {
       const data = await res.json();
       if (res.ok) {
         dispatch(signInSuccess(data));
-        navigate("/Home");
+        navigate("/");
       }
     } catch (error) {
       dispatch(signInFailure(error.message));

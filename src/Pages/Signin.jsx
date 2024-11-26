@@ -1,5 +1,5 @@
 import { Button, Spinner, Form, Alert } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,19 +17,28 @@ const Signin = () => {
   const [passwordError, setPasswordError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const dispatch = useDispatch();
-
-  const loading = useSelector(selectLoading); // Use the memoized selector
-  const error = useSelector(selectError); // Use the memoized selector
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
   const navigate = useNavigate();
 
-  const validateEmail = (email) => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
+  // Clear messages after 5 seconds
+  useEffect(() => {
+    if (successMessage || error) {
+      const timer = setTimeout(() => {
+        setSuccessMessage(null);
+        dispatch(signInFailure(null)); // Clear the error state in Redux
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage, error, dispatch]);
+
+  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [id]: value.trim() }));
+    setFormData((prev) => ({ ...prev, [id]: value.trim() }));
 
+    // Reset errors on input change
     if (id === "email") setEmailError(null);
     if (id === "password") setPasswordError(null);
   };
@@ -38,72 +47,59 @@ const Signin = () => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      const errorMsg = "Please fill out all the fields.";
-      alert(errorMsg);
-      return dispatch(signInFailure(errorMsg));
+      return dispatch(signInFailure("Please fill out all the fields."));
     }
 
     if (!validateEmail(formData.email)) {
-      const errorMsg = "Invalid email format.";
-      alert(errorMsg);
-      return setEmailError(errorMsg);
+      setEmailError("Invalid email format.");
+      return;
     }
 
     try {
       dispatch(signInStart());
-      const response = await fetch("http://localhost:3001/auth/login-User", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://weddingwise-backend-gda8.onrender.com/api/users/login-User",
+        {
+          method: "POST",
+          body: JSON.stringify(formData),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       const data = await response.json();
-
       if (!response.ok) {
-        let errorMsg;
-        if (data.message.includes("wrong password")) {
-          errorMsg = "The password entered is incorrect.";
-          setPasswordError(errorMsg);
-        } else if (data.message.includes("email")) {
-          errorMsg = "The email entered is incorrect or not registered.";
-          setEmailError(errorMsg);
-        } else {
-          errorMsg = "Failed to sign in.";
-          dispatch(signInFailure(errorMsg));
-        }
-        alert(errorMsg);
+        handleError(data.message);
         return;
       }
 
       localStorage.setItem("Token", data.token);
       dispatch(signInSuccess(data));
-
-      const successMsg = "Sign in successful!";
-      alert(successMsg);
-      setSuccessMessage(successMsg);
-
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
-
+      setSuccessMessage("Sign in successful!");
       navigate("/");
-    } catch (error) {
-      const errorMsg = error.message || "An error occurred. Please try again.";
-      alert(errorMsg);
-      dispatch(signInFailure(errorMsg));
+    } catch {
+      dispatch(signInFailure("An error occurred. Please try again."));
     }
+  };
+
+  const handleError = (message) => {
+    if (message.includes("wrong password")) {
+      setPasswordError("The password entered is incorrect.");
+    } else if (message.includes("email")) {
+      setEmailError("The email entered is incorrect or not registered.");
+    }
+    dispatch(signInFailure(message));
   };
 
   return (
     <div className="container mt-5">
       <div className="text-center">
         <h1 className="display-4">WeddingWise</h1>
-        <p>You can sign in with your email and password below or use OAuth.</p>
+        <p>Sign in with your email and password or use OAuth.</p>
       </div>
+
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
       {error && <Alert variant="danger">{error}</Alert>}
+
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="email" className="mb-3">
           <Form.Label>Email</Form.Label>
@@ -118,6 +114,7 @@ const Signin = () => {
             {emailError}
           </Form.Control.Feedback>
         </Form.Group>
+
         <Form.Group controlId="password" className="mb-3">
           <Form.Label>Password</Form.Label>
           <Form.Control
@@ -131,16 +128,18 @@ const Signin = () => {
             {passwordError}
           </Form.Control.Feedback>
         </Form.Group>
+
         <Button variant="primary" type="submit" disabled={loading}>
           {loading ? <Spinner animation="border" size="sm" /> : "Sign In"}
         </Button>
+
         <div className="mt-3">
           <p>
-            Don&apos;t have an account already?{" "}
-            <Link to="/signup">Sign Up</Link>
+            Don&apos;t have an account? <Link to="/signup">Sign Up</Link>
           </p>
         </div>
-        <OAuth />
+
+        <OAuth loading={loading} />
       </Form>
     </div>
   );

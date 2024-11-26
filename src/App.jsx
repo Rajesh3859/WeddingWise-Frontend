@@ -6,6 +6,7 @@ import Signup from "./Pages/Signup";
 import Signin from "./Pages/Signin";
 import SubBrands from "./Pages/SubBrands";
 import Services from "./Pages/Services";
+import Cart from "./Pages/Cart";
 const App = () => {
   return (
     <BrowserRouter>
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/Services/:id" element={<Services />} />
         <Route path="/SubBrands/:id" element={<SubBrands />} />
         <Route path="/Signup" element={<Signup />} />
+        <Route path="/Cart" element={<Cart />} />
       </Routes>
       <FooterCom />
     </BrowserRouter>

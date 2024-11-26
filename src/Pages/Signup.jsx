@@ -23,7 +23,7 @@ const Signup = () => {
       setErrorMessage(null);
 
       const response = await fetch(
-        "https://weddingwise-backend-gda8.onrender.com/auth/register-user",
+        "https://weddingwise-backend-gda8.onrender.com/api/users/register-user",
         {
           method: "POST",
           headers: {

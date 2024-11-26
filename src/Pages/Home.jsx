@@ -3,7 +3,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { Container, Row, Col, Spinner, Alert } from "react-bootstrap";
 import couple from "../assets/couple.png";
 import axios from "axios";
-import CategoryCard from "../Components/Cards/Categorycard";
+import CategoryCard from "../Components/Cards/CategoryCard";
 
 export default function Home() {
   const [categories, setCategories] = useState([]); // Ensure initial state is an array
@@ -13,10 +13,9 @@ export default function Home() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        // const response = await axios.get(
-        //   "https://weddingwise-backend-gda8.onrender.com/brands/");
-
-        const response = await axios.get("http://localhost:3001/brands/");
+        const response = await axios.get(
+          "https://weddingwise-backend-gda8.onrender.com/brands/"
+        );
         console.log(response.data);
 
         // Adjust this based on the actual structure of your response
