@@ -1,14 +1,15 @@
 import { Card, Button, Alert } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { addToCart } from "../../Redux/Slice/cartSlice";
 
-const ServiceCard = ({ services, addToCart }) => {
+const ServiceCard = ({ services }) => {
   const [showAlert, setShowAlert] = useState(false);
 
   const handleAddToCart = () => {
     if (services._id) {
       console.log("Calling addToCart with:", services);
-      addToCart(services); // Call the function to add to the cart
+      console.log (addToCart(services)); // Call the function to add to the cart
       setShowAlert(true); // Show success alert
       setTimeout(() => setShowAlert(false), 3000); // Auto-hide alert after 3 seconds
     } else {
@@ -64,7 +65,7 @@ ServiceCard.propTypes = {
     description: PropTypes.string,
     imageUrl: PropTypes.string,
   }).isRequired,
-  addToCart: PropTypes.func.isRequired,
+  addToCart: PropTypes.func,
 };
 
 export default ServiceCard;

@@ -5,11 +5,10 @@ import { toggleTheme } from "../Redux/Slice/themeSlice";
 import { signOutSuccess } from "../Redux/Slice/userSlice";
 import { Navbar, Nav, NavDropdown, Offcanvas } from "react-bootstrap";
 import { useState } from "react";
-import PropTypes from "prop-types";
 import { selectCurrentUser } from "../Redux/Slice/userSlice";
 import { useNavigate } from "react-router-dom"; // Import the memoized selector
 
-const Header = ({ category, cartCount }) => {
+const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentuser = useSelector(selectCurrentUser); // Use memoized selector
@@ -51,19 +50,19 @@ const Header = ({ category, cartCount }) => {
         <Offcanvas.Body>
           <Nav className="flex-row-right grid gap-4 ">
             {/* Navigation Links */}
-            <Nav.Link onClick={() => navigate(`/SubBrands/${category.name}`)}>
+            <Nav.Link onClick={() => navigate(`/SubBrands}`)}>
               Planning Tool
             </Nav.Link>
-            <Nav.Link onClick={() => navigate(`/SubBrands/${category.name}`)}>
+            <Nav.Link onClick={() => navigate(`/SubBrands}`)}>
               Wedding Vendor
             </Nav.Link>
-            <Nav.Link onClick={() => navigate(`/SubBrands/${category.name}`)}>
+            <Nav.Link onClick={() => navigate(`/SubBrands}`)}>
               Wedding Venue
             </Nav.Link>
-            <Nav.Link onClick={() => navigate(`/SubBrands/${category.name}`)}>
+            <Nav.Link onClick={() => navigate(`/SubBrands}`)}>
               Bride
             </Nav.Link>
-            <Nav.Link onClick={() => navigate(`/SubBrands/${category.name}`)}>
+            <Nav.Link onClick={() => navigate(`/SubBrands}`)}>
               Groom
             </Nav.Link>
 
@@ -112,7 +111,7 @@ const Header = ({ category, cartCount }) => {
             {/* Cart Icon */}
             <Nav.Link as={Link} to="/Cart" className="position-relative">
               <FaShoppingCart size={20} />
-              {cartCount > 0 && (
+              {
                 <span
                   className="badge badge-pill badge-danger position-absolute"
                   style={{
@@ -121,22 +120,15 @@ const Header = ({ category, cartCount }) => {
                     fontSize: "12px",
                   }}
                 >
-                  {cartCount}
+              
                 </span>
-              )}
+              }
             </Nav.Link>
           </Nav>
         </Offcanvas.Body>
       </Navbar.Offcanvas>
     </Navbar>
   );
-};
-
-Header.propTypes = {
-  category: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-  }).isRequired,
-  cartCount: PropTypes.number.isRequired, // Number of items in the cart
 };
 
 export default Header;

@@ -1,13 +1,11 @@
-import { useState } from "react";
+
 import ServiceCard from "../Components/Cards/ServiceCard";
 
-const Cart = () => {
-  const [setCart] = useState([]);
+const Cart = () => { // Fix the useState syntax
 
-  const handleAddToCart = (service) => {
-    console.log("Service added to cart:", service);
-    setCart((prevCart) => [...prevCart, service]);
-    alert(`${service.name} added to cart!`);
+  const handleAddToCart = (addToCart) => {
+    console.log("Service added to cart:", addToCart);// Add addToCart to cart
+    alert(`${addToCart.name} added to cart!`);
   };
 
   const sampleServices = {
@@ -20,13 +18,10 @@ const Cart = () => {
 
   return (
     <div>
-      {sampleServices.map((service) => (
-        <ServiceCard
-          key={service._id}
-          services={service}
-          addToCart={handleAddToCart} // Pass the addToCart function
-        />
-      ))}
+      <ServiceCard
+        services={sampleServices} // Pass the single object
+        addToCart={handleAddToCart} // Pass the addToCart function
+      />
     </div>
   );
 };
