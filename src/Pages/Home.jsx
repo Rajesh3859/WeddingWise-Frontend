@@ -3,7 +3,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { Container, Row, Col, Spinner, Alert } from "react-bootstrap";
 import couple from "../assets/couple.png";
 import axios from "axios";
-import CategoryCard from "../Components/Cards/CategoryCard.jsx";
+import CategoryCard from "../Components/Cards/CategoryCard";
 
 export default function Home() {
   const [categories, setCategories] = useState([]); // Ensure initial state is an array
